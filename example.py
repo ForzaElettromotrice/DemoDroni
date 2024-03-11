@@ -252,7 +252,7 @@ def esplodi():
 
 
 if __name__ == '__main__':
-    # demo_example()
+    demo_example()
     # viewport_example()
     # render_loop_example()
     # primary_window_example()
