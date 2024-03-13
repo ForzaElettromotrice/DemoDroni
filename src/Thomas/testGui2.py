@@ -5,6 +5,8 @@ import dearpygui.dearpygui as dpg
 dpg.create_context()
 #   1.  ancorare finestre       ---FATTO---
 #   2.  sovrascrivere chisura
+#   3.  Valori: -Batteria
+#               -Lista posizioni per drone
 
 
 def change_text(sender, app_data):
@@ -58,7 +60,7 @@ with dpg.handler_registry():
 #with dpg.theme() as connected_theme:
     #non so che cazzo ce va qua (devo trovare delle informazioni su cosa va dentro dpg.theme_component()
 
-width, height, channels, data = dpg.load_image("/home/thomas/PycharmProjects/droneNet/droneMQ_9.jpg")
+width, height, channels, data = dpg.load_image("/home/thomas/Documents/Università/DemoDroni/src/Thomas/droneMQ_9.jpg")
 
 with dpg.texture_registry():
     dpg.add_static_texture( width= width, height= height, default_value= data, tag= "liberta",)
@@ -83,7 +85,7 @@ with dpg.window( tag="sidebar", label= "Sidebar - Lista droni", pos= (600, 0), n
                     dpg.add_button(callback=info_drone, user_data= ["ciaone", 1, 2, 3, "basta"], label= "Info")
                 '''with dpg.group(label= "right", width= 80, pos= (100, 100)):
                     dpg.add_button(callback=info_drone, user_data= ["ciaone", 1, 2, 3, "basta"], label= "Info")'''
-                with dpg.drawlist(width= 180, height= 180):
+                with dpg.drawlist(width= 170, height= 170):
                     dpg.draw_image("liberta", pmin= (0,0), pmax= (179, 179))
 
 dpg.configure_item(item= "mappa", width= 600, height= 600)
