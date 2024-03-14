@@ -1,8 +1,13 @@
 import dearpygui.dearpygui as dpg
+import dearpygui_map as map
+from screeninfo import get_monitors
 
 class UI:
+    """Classe che gestisce l'interfaccia utente, mappa compresa"""
+    tags = {}
+    
     #Crea l'interfaccia
-    def createInterface():
+    def createInterface(self):
         dpg.create_context()
     #   1.  ancorare finestre       ---FATTO---
     #   2.  sovrascrivere chisura
@@ -24,21 +29,22 @@ class UI:
 
         def sideBarFilterCallback(sender, filter):
             dpg.set_value("sideBarFilter", filter)
+        
+
+        screenSize = (get_monitors()[0].width, get_monitors()[0].height)
+        width, height, channels, data = dpg.load_image("/home/thomas/Documents/Università/DemoDroni/src/Thomas/droneMQ_9.jpg")
 
         with dpg.value_registry(label= "Registro valori", tag = "baseValues", user_data= ("valore1", 2, "valore3")):
             dpg.add_string_value(default_value= "Stringa di dafault", tag="defString")
 
-
         #with dpg.theme() as connected_theme:
             #non so che cazzo ce va qua (devo trovare delle informazioni su cosa va dentro dpg.theme_component()
-
-        width, height, channels, data = dpg.load_image("/home/thomas/Documents/Università/DemoDroni/src/Thomas/droneMQ_9.jpg")
 
         with dpg.texture_registry():
             dpg.add_static_texture( width= width, height= height, default_value= data, tag= "liberta",)
 
-        with dpg.window(width=500, height=300, tag= "mappa", label= "Mappa", no_title_bar= True, no_move = True, no_resize= True):
-            dpg.add_text("Inserire mappa")
+        with dpg.window(width=600, height=600, tag= "mapContainer", label= "Mappa", no_title_bar= True, no_move = True, no_resize= True):
+            self.tags["maps"] = map.add_map_widget(width= screenSize[0], height= screenSize[1], center= (41.890210, 12.492231), zoom_level= 12)
             #da finire
 
         with dpg.window( tag="sidebar", label= "Sidebar - Lista droni", pos= (600, 0), no_move = True, no_resize= True, no_title_bar= True):
@@ -54,10 +60,9 @@ class UI:
                         with dpg.drawlist(width= 170, height= 170):
                             dpg.draw_image("liberta", pmin= (0,0), pmax= (179, 179))
 
-        dpg.configure_item(item= "mappa", width= 600, height= 600)
         dpg.configure_item(item= "sidebar", width= 200, height= 600)
 
-        dpg.create_viewport(title='Presentazione droNet', width=800, height=600, min_width= dpg.get_item_width("sidebar")+dpg.get_item_width("mappa"), min_height=600)
+        dpg.create_viewport(title='Presentazione droNet', width=800, height=600, min_width= dpg.get_item_width("sidebar")+dpg.get_item_width("mapContainer"), min_height=600)
         dpg.setup_dearpygui()
         dpg.show_viewport()
 
@@ -69,12 +74,14 @@ class UI:
         #per ogni frame (basato sul refresh rate del monitor) effettua un'azione
         while dpg.is_dearpygui_running():
             if LST_VW_WIDTH != dpg.get_viewport_width() or LST_VW_HEIGHT != dpg.get_viewport_height():
-                vwWidth = dpg.get_viewport_width()
-                vwHeight = dpg.get_viewport_height()
+                LST_VW_WIDTH    = dpg.get_viewport_width()
+                LST_VW_HEIGHT   = dpg.get_viewport_height()
 
-                dpg.configure_item(item= "mappa", width= vwWidth-dpg.get_item_width("sidebar"), height= vwHeight)
-                dpg.configure_item(item= "sidebar", width= 200, height= vwHeight, pos= (vwWidth-dpg.get_item_width("sidebar"), 0))
+                dpg.configure_item(item= "mapContainer", width= LST_VW_WIDTH-200, height= LST_VW_HEIGHT)
+                dpg.configure_item(item= "sidebar", width= 200, height= LST_VW_HEIGHT, pos= (LST_VW_WIDTH-dpg.get_item_width("sidebar"), 0))
+                #dpg.configure_item(item= self.tags["maps"], width = dpg.get_item_width("mapContainer"), height = dpg.get_item_height("mapContainer"))
             dpg.render_dearpygui_frame()
 
         dpg.start_dearpygui()
         dpg.destroy_context()
+
