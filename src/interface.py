@@ -44,7 +44,7 @@ class UI:
             dpg.add_static_texture( width= width, height= height, default_value= data, tag= "liberta",)
 
         with dpg.window(width=600, height=600, tag= "mapContainer", label= "Mappa", no_title_bar= True, no_move = True, no_resize= True):
-            self.tags["maps"] = map.add_map_widget(width= screenSize[0], height= screenSize[1], center= (41.890210, 12.492231), zoom_level= 12)
+            self.tags["maps"] = map.add_map_widget(width= screenSize[0]-200, height= screenSize[1], center= (41.890210, 12.492231), zoom_level= 12)
             #da finire
 
         with dpg.window( tag="sidebar", label= "Sidebar - Lista droni", pos= (600, 0), no_move = True, no_resize= True, no_title_bar= True):

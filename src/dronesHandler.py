@@ -4,3 +4,13 @@
 
 class drone:
     
+    def __init__(self, id, stato, pos, batt):
+        '''Effettua l'inizializazzione degli attributi del drone.
+            - id: Identificativo del drone
+            - stato: enumerativo
+            - pos: tupla di coordinate
+            - batt: percentuale della batteria'''
+        self.id = id
+        self.stato = stato #0: non attivo    1: non connesso, attivo     2: connesso, attivo
+        self.posizione = pos  #coordinate posizione
+        self.batteria = batt #valore percentuale
