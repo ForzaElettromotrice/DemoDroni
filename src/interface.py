@@ -20,7 +20,6 @@ class UI:
                         occorre quindi effettuare una remove_alias() alla fine della funzione'''
 
                 dpg.add_text("Informazione drone")
-            dpg.configure_item(sender, label = "Sono stato usato")
             print(sender)
             print(app_data)
             print(user_data)
