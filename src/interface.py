@@ -5,7 +5,9 @@ from dronesHandler import TeamDroni, Stato
 
 
 class UI:
-    '''Classe che gestisce l'interfaccia utente, mappa compresa.'''
+    '''Classe che gestisce l'interfaccia utente, mappa compresa.
+    
+    Deve essere seguito il costruttore, poi interface() e infine setup() a cui va passato l'oggetto team_droni.'''
     #tags contiene i tag non gestiti da dpg, cioè solo quello della mappa, che tanto MATTEO deve cambiare
     #tags = {}
 
@@ -108,13 +110,3 @@ class UI:
 
     def sideBarFilterCallback(sender, filter):
         dpg.set_value("sideBarFilter", filter)
-
-interfaccia = UI()
-interfaccia.interface()
-team_droni = TeamDroni()
-for i in range(7):
-    team_droni.update_drone(i, Stato.CONNECTED, (100*i, 100*i), 50, (50*i, 50*i))
-team_droni.ids[3].stato = Stato.NOT_CONNECTED
-team_droni.ids[6].stato = Stato.NOT_OPERATIVE
-team_droni.ids[5].stato = Stato.NOT_OPERATIVE
-interfaccia.setup(team_droni)
