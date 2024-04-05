@@ -13,9 +13,9 @@ class UI:
 
     #variabili di classe per dearpygui
     screenSize = (get_monitors()[0].width, get_monitors()[0].height)
-    connected = dpg.load_image("/home/thomas/Documents/Università/DemoDroni/src/dronesImg/droneConnected.png")
-    not_connected = dpg.load_image("/home/thomas/Documents/Università/DemoDroni/src/dronesImg/droneNotConnected.png")
-    not_operational = dpg.load_image("/home/thomas/Documents/Università/DemoDroni/src/dronesImg/droneNotOperational.png")
+    connected = dpg.load_image("src/dronesImg/droneConnected.png")
+    not_connected = dpg.load_image("src/dronesImg/droneNotConnected.png")
+    not_operational = dpg.load_image("src/dronesImg/droneNotOperational.png")
     
 
     
@@ -110,3 +110,10 @@ class UI:
 
     def sideBarFilterCallback(sender, filter):
         dpg.set_value("sideBarFilter", filter)
+
+interface = UI()
+interface.interface()
+
+team = TeamDroni()
+
+interface.setup(team)
