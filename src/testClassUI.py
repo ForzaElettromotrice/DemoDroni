@@ -1,7 +1,7 @@
 import dearpygui.dearpygui as dpg
 import dearpygui_map as map #libreria estensione di dpg per la mappa per MATTEO, fa cagare 
 from screeninfo import get_monitors
-from dronesHandler import TeamDroni, Stato
+from dronesHandler import TeamDroni
 
 
 class UI:
@@ -54,17 +54,17 @@ class UI:
                             dpg.add_text("Drone "+ str(id))
                             dpg.add_button(callback= UI.info_drone, user_data= [team_droni.ids[id]], label= "Info")
                         with dpg.drawlist(width= 170, height= 170, tag= "drone" + str(id)):
-                            if team_droni.ids[id].stato == Stato.CONNECTED:
+                            if team_droni.ids[id].stato == "connesso":
                                 dpg.draw_image("connected", pmin= (0,0), pmax= (170, 170))
-                            elif team_droni.ids[id].stato == Stato.NOT_CONNECTED:
+                            elif team_droni.ids[id].stato == "sconnesso":
                                 dpg.draw_image("not_connected", pmin= (0,0), pmax= (170, 170))
                             else:
                                 dpg.draw_image("not_operational", pmin= (0,0), pmax= (170, 170))
                 else:
                     dpg.delete_item(dpg.get_item_children("drone"+str(id), 0))
-                    if team_droni.ids[id].stato == Stato.CONNECTED:
+                    if team_droni.ids[id].stato == "connesso":
                         dpg.draw_image("connected", pmin= (0,0), pmax= (170, 170), parent= "drone"+str(id))
-                    elif team_droni.ids[id].stato == Stato.NOT_CONNECTED:
+                    elif team_droni.ids[id].stato == "sconnesso":
                         dpg.draw_image("not_connected", pmin= (0,0), pmax= (170, 170), parent= "drone"+str(id))
                     else:
                         dpg.draw_image("not_operational", pmin= (0,0), pmax= (170, 170), parent= "drone"+str(id))
@@ -99,8 +99,10 @@ class UI:
         with dpg.window(width=500, height=300, tag= "infoDrone", label= "Info drone", modal= True):
             '''NOTA: il tag dentro ad un evento che può accadere più volte causerà errore dopo la prima volta
                     occorre quindi effettuare una remove_alias() alla fine della funzione'''
+            print(user_data)
             dpg.add_text("ID: " + str(user_data[0].id))
-            dpg.add_text("Stato: " + str(user_data[0].stato.value))
+            print(str(user_data[0].stato))
+            dpg.add_text("Stato: " + str(user_data[0].stato))
             dpg.add_text("Posizione: " + str(user_data[0].posizione))
             dpg.add_text("Batteria: " + str(user_data[0].batteria) + "%")
             dpg.add_text("Obbiettivo: " + str(user_data[0].obbiettivo))
@@ -108,13 +110,4 @@ class UI:
 
     def sideBarFilterCallback(sender, filter):
         dpg.set_value("sideBarFilter", filter)
-
-interfaccia = UI()
-interfaccia.interface()
-team_droni = TeamDroni()
-for i in range(7):
-    team_droni.update_drone(i, Stato.CONNECTED, (100*i, 100*i), 50, (50*i, 50*i))
-team_droni.ids[3].stato = Stato.NOT_CONNECTED
-team_droni.ids[6].stato = Stato.NOT_OPERATIVE
-team_droni.ids[5].stato = Stato.NOT_OPERATIVE
-interfaccia.setup(team_droni)
+        print("Io qua entro")
